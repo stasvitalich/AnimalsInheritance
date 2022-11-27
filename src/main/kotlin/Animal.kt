@@ -1,18 +1,15 @@
-open class Animal {
-    open val image = ""
-    open val food = ""
-    open val habitat = ""
+interface Roamable { // Мы добавили интерфейс, и нам нужен класс для него.
+    fun roam()
+}
+
+abstract class Animal : Roamable { // Данный класс реализует интерфейс Roamable.
+    abstract val image: String
+    abstract val food: String
+    abstract val habitat: String
     val hunger = 10
-
-    open fun makeNoise() {
-        println("The animal is making a noise")
-    }
-
-    open fun eat() {
-        println("The animal is eating")
-    }
-
-    open fun roam() {
+    abstract fun makeNoise()
+    abstract fun eat()
+    override fun roam() { // Данная функция будет переопределяться в интерфейсе, поэтому override
         println("The animal is roaming")
     }
 
@@ -35,7 +32,7 @@ class Hippo : Animal() {
     }
 }
 
-open class Canine : Animal() {
+abstract class Canine : Animal() {
     override fun roam() {
         println("The Canine is roaming")
     }
@@ -52,6 +49,12 @@ class Wolf : Canine() {
 
     override fun eat() {
         println("The wolf is eating $food")
+    }
+}
+
+class Vehicle : Roamable { // Создаём класс для интерфейса
+    override fun roam(){
+        println("The Vehicle is roaming")
     }
 }
 
@@ -75,4 +78,12 @@ fun main() {
 
     vet.giveShot(wolf)
     vet.giveShot(hippo)
+
+    val roamables = arrayOf(Hippo(), Wolf(), Vehicle())
+    for (item in roamables){
+        item.roam()
+        if (item is Animal){
+            item.eat()
+        }
+    }
 }
